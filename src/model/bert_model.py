@@ -365,7 +365,6 @@ class BERTNERModel:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=data_collator,
-            tokenizer=self.tokenizer,
         )
 
         logger.info("Trainer initialized. Starting training...")
