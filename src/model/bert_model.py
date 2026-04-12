@@ -377,6 +377,67 @@ class BERTNERModel:
 
         return trainer, train_result.metrics
 
+    def compute_metrics(self, p):
+        """
+        Compute F1, precision, and recall for token classification.
+
+        Args:
+            p: EvalPrediction object containing predictions and label_ids
+
+        Returns:
+            Dictionary with F1, precision, and recall scores
+        """
+        from sklearn.metrics import f1_score, precision_score, recall_score
+
+        predictions = p.predictions
+        labels = p.label_ids
+
+        # Get the predicted class for each token
+        predictions = np.argmax(predictions, axis=2)
+
+        # Remove ignored index (special tokens with label -100)
+        true_predictions = [
+            [p for (p, l) in zip(pred, label) if l != -100]
+            for pred, label in zip(predictions, labels)
+        ]
+        true_labels = [
+            [l for (p, l) in zip(pred, label) if l != -100]
+            for pred, label in zip(predictions, labels)
+        ]
+
+        # Flatten lists
+        true_predictions_flat = []
+        true_labels_flat = []
+        for pred_seq, label_seq in zip(true_predictions, true_labels):
+            true_predictions_flat.extend(pred_seq)
+            true_labels_flat.extend(label_seq)
+
+        # Calculate metrics
+        f1 = f1_score(
+            true_labels_flat,
+            true_predictions_flat,
+            average="weighted",
+            zero_division=0,
+        )
+        precision = precision_score(
+            true_labels_flat,
+            true_predictions_flat,
+            average="weighted",
+            zero_division=0,
+        )
+        recall = recall_score(
+            true_labels_flat,
+            true_predictions_flat,
+            average="weighted",
+            zero_division=0,
+        )
+
+        return {
+            "f1": f1,
+            "precision": precision,
+            "recall": recall,
+        }
+
     def evaluate(
         self,
         eval_dataset: Dataset,
@@ -388,7 +449,7 @@ class BERTNERModel:
             eval_dataset: Tokenized evaluation dataset
 
         Returns:
-            Dictionary containing evaluation metrics
+            Dictionary containing evaluation metrics (loss, F1, precision, recall)
         """
         logger.info(f"Starting evaluation on {len(eval_dataset)} samples...")
 
@@ -404,6 +465,7 @@ class BERTNERModel:
             args=eval_args,
             data_collator=data_collator,
             tokenizer=self.tokenizer,
+            compute_metrics=self.compute_metrics,
         )
 
         eval_result = trainer.evaluate(eval_dataset)
