@@ -17,6 +17,7 @@ dependencies:
     - pytest>=7.0.0
     - accelerate>=0.20.0
     - scikit-learn>=1.0.0
+    - seqeval>=1.2.2
     # torch-directml is optional for Windows AMD GPUs - install separately if needed:
     # pip install torch-directml
 

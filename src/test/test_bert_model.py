@@ -51,10 +51,7 @@ DEVICE_OPTIONS = [
     "cpu",
 ]
 
-# Configure logging for tests
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+# Get logger for tests (pytest will handle configuration)
 logger = logging.getLogger(__name__)
 
 

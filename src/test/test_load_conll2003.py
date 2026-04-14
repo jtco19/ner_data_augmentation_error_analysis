@@ -15,8 +15,8 @@ from datasets import Dataset, DatasetDict
 from load_conll2003 import load_conll2003_dataset, subsample_dataset
 import logging
 
-# Configure logging for tests
-logging.basicConfig(level=logging.DEBUG)
+# Get logger for tests (pytest will handle configuration)
+logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
