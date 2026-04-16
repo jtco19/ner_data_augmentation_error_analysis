@@ -8,6 +8,7 @@ import platform
 from typing import Dict, List, Optional, Tuple
 import numpy as np
 import torch
+from torch.utils.data import DataLoader
 from transformers import (
     AutoTokenizer,
     AutoModelForTokenClassification,
@@ -376,6 +377,98 @@ class BERTNERModel:
         logger.info(f"Training results: {train_result.metrics}")
 
         return trainer, train_result.metrics
+
+    def get_predictions(
+        self, test_dataset, label_mapping
+    ) -> Tuple[List[List[str]], List[List[str]]]:
+        """
+        Get predictions from the trained model on the test dataset.
+
+        Args:
+            test_dataset: Prepared (tokenized) test dataset
+            label_mapping: Dictionary mapping label IDs to label names (e.g., {0: 'O', 1: 'B-PER', ...})
+
+        Returns:
+            Tuple of (true_labels, predicted_labels) - both as lists of BIO-tagged sequences
+        """
+        logger.info("Extracting predictions from model...")
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model.to(device)
+        self.model.eval()
+
+        # Define collate function for variable-length sequences
+        def collate_fn(batch):
+            """Collate function that pads sequences to the same length in batch."""
+            max_len = max(len(item["input_ids"]) for item in batch)
+
+            input_ids = []
+            attention_mask = []
+            labels = []
+
+            for item in batch:
+                # Pad input_ids
+                padded_ids = item["input_ids"] + [0] * (
+                    max_len - len(item["input_ids"])
+                )
+                input_ids.append(torch.tensor(padded_ids))
+
+                # Pad attention_mask
+                padded_mask = item["attention_mask"] + [0] * (
+                    max_len - len(item["attention_mask"])
+                )
+                attention_mask.append(torch.tensor(padded_mask))
+
+                # Pad labels with -100 (ignore index)
+                padded_labels = item["labels"] + [-100] * (
+                    max_len - len(item["labels"])
+                )
+                labels.append(torch.tensor(padded_labels))
+
+            return {
+                "input_ids": torch.stack(input_ids),
+                "attention_mask": torch.stack(attention_mask),
+                "labels": torch.stack(labels),
+            }
+
+        # Create dataloader with custom collate function
+        dataloader = DataLoader(test_dataset, batch_size=32, collate_fn=collate_fn)
+
+        all_predictions = []
+        all_true_labels = []
+
+        id2label = {
+            i: label for i, label in enumerate(self.model.config.id2label.values())
+        }
+
+        with torch.no_grad():
+            for batch in dataloader:
+                # Get logits from model
+                outputs = self.model(
+                    input_ids=batch["input_ids"].to(device),
+                    attention_mask=batch["attention_mask"].to(device),
+                )
+
+                logits = outputs.logits
+                predictions = torch.argmax(logits, dim=2)
+
+                # Convert to labels
+                for i, (pred, true) in enumerate(zip(predictions, batch["labels"])):
+                    # Filter out special tokens and padding (-100 labels)
+                    pred_labels = [
+                        label_mapping[id2label[p.item()]]
+                        for p, t in zip(pred, true)
+                        if t != -100
+                    ]
+                    true_labels = [
+                        label_mapping[id2label[t.item()]] for t in true if t != -100
+                    ]
+
+                    all_predictions.append(pred_labels)
+                    all_true_labels.append(true_labels)
+
+        logger.info(f"Extracted predictions for {len(all_predictions)} sequences")
+        return all_true_labels, all_predictions
 
     def compute_metrics(self, p):
         """

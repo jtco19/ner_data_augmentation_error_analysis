@@ -10,7 +10,6 @@ import tempfile
 import torch
 import numpy as np
 from datasets import Dataset, DatasetDict
-from unittest.mock import Mock, patch, MagicMock
 import logging
 
 # Add the model directory to the path
@@ -50,6 +49,18 @@ DEVICE_OPTIONS = [
     "cuda",
     "cpu",
 ]
+
+LABEL_MAPPING = {
+    "LABEL_0": "O",
+    "LABEL_1": "B-PER",
+    "LABEL_2": "I-PER",
+    "LABEL_3": "B-ORG",
+    "LABEL_4": "I-ORG",
+    "LABEL_5": "B-LOC",
+    "LABEL_6": "I-LOC",
+    "LABEL_7": "B-MISC",
+    "LABEL_8": "I-MISC",
+}
 
 # Get logger for tests (pytest will handle configuration)
 logger = logging.getLogger(__name__)
@@ -390,6 +401,99 @@ class TestFactoryFunction:
         """Test factory function with forced device."""
         model = create_bert_ner_model(force_device="cpu")
         assert model.device == "cpu", "Should force CPU device"
+
+
+class TestGetPredictions:
+    """Tests for get_predictions method."""
+
+    def test_get_predictions_returns_tuple(self, sample_ner_dataset):
+        """Test that get_predictions returns a tuple of lists."""
+        model = BERTNERModel()
+        test_split = sample_ner_dataset["test"]
+        prepared = model.prepare_dataset(test_split, batch_size=2)
+
+        true_labels, pred_labels = model.get_predictions(prepared, LABEL_MAPPING)
+
+        assert isinstance(true_labels, list), "True labels should be a list"
+        assert isinstance(pred_labels, list), "Predicted labels should be a list"
+        assert len(true_labels) == len(
+            pred_labels
+        ), "Should have equal number of sequences"
+
+    def test_get_predictions_list_of_lists(self, sample_ner_dataset):
+        """Test that get_predictions returns list of label sequences."""
+        model = BERTNERModel()
+        test_split = sample_ner_dataset["test"]
+        prepared = model.prepare_dataset(test_split, batch_size=2)
+
+        true_labels, pred_labels = model.get_predictions(prepared, LABEL_MAPPING)
+
+        assert all(
+            isinstance(seq, list) for seq in true_labels
+        ), "All true labels should be lists"
+        assert all(
+            isinstance(seq, list) for seq in pred_labels
+        ), "All predicted labels should be lists"
+
+    def test_get_predictions_valid_label_strings(self, sample_ner_dataset):
+        """Test that predictions contain valid label strings."""
+        model = BERTNERModel()
+        test_split = sample_ner_dataset["test"]
+        prepared = model.prepare_dataset(test_split, batch_size=2)
+
+        true_labels, pred_labels = model.get_predictions(prepared, LABEL_MAPPING)
+
+        valid_labels = set(LABEL_MAPPING.values())
+
+        for seq in true_labels:
+            for label in seq:
+                assert (
+                    label in valid_labels
+                ), f"Label {label} not in valid labels {valid_labels}"
+
+        for seq in pred_labels:
+            for label in seq:
+                assert (
+                    label in valid_labels
+                ), f"Label {label} not in valid labels {valid_labels}"
+
+    def test_get_predictions_non_empty(self, sample_ner_dataset):
+        """Test that get_predictions returns non-empty results."""
+        model = BERTNERModel()
+        test_split = sample_ner_dataset["test"]
+        prepared = model.prepare_dataset(test_split, batch_size=2)
+
+        true_labels, pred_labels = model.get_predictions(prepared, LABEL_MAPPING)
+
+        assert len(true_labels) > 0, "Should have at least one sequence"
+        assert len(pred_labels) > 0, "Should have at least one sequence"
+        assert all(
+            len(seq) > 0 for seq in true_labels
+        ), "All sequences should be non-empty"
+        assert all(
+            len(seq) > 0 for seq in pred_labels
+        ), "All sequences should be non-empty"
+
+    def test_get_predictions_batch_size_independence(self, sample_ner_dataset):
+        """Test that predictions are consistent regardless of batch size."""
+        model = BERTNERModel()
+        test_split = sample_ner_dataset["test"]
+
+        # Prepare with different batch sizes
+        prepared_batch_2 = model.prepare_dataset(test_split, batch_size=2)
+        prepared_batch_4 = model.prepare_dataset(test_split, batch_size=4)
+
+        true_labels_2, pred_labels_2 = model.get_predictions(
+            prepared_batch_2, LABEL_MAPPING
+        )
+        true_labels_4, pred_labels_4 = model.get_predictions(
+            prepared_batch_4, LABEL_MAPPING
+        )
+
+        # Should get same number of sequences
+        assert len(pred_labels_2) == len(
+            pred_labels_4
+        ), "Batch size should not affect number of sequences"
 
 
 class TestIntegration:
