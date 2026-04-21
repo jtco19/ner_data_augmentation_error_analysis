@@ -1,0 +1,305 @@
+{
+  "experiment_type": "Augmentation Comparison Study",
+  "baseline_dataset_sizes": {
+    "train": 14041,
+    "validation": 3250,
+    "test": 3453
+  },
+  "models": {
+    "baseline": {
+      "training": {
+        "training_time": 1117.059839963913,
+        "train_samples": 14041,
+        "val_samples": 3250
+      },
+      "augmentation_quality": {},
+      "evaluation": {
+        "eval_time": 79.36037468910217,
+        "test_samples": 3453,
+        "eval_loss": 0.16906607151031494,
+        "eval_f1": 0.9701646588449933,
+        "eval_precision": 0.9709640889942224,
+        "eval_recall": 0.9696506515812862
+      },
+      "per_type_f1_scores": {
+        "overall": {
+          "f1": 0.8946179034266476,
+          "precision": 0.889490095377843,
+          "recall": 0.8998051767325355
+        },
+        "LOC": {
+          "f1": 0.9206081081081081,
+          "precision": 0.9332191780821918,
+          "recall": 0.9083333333333333,
+          "support": 3416
+        },
+        "MISC": {
+          "f1": 0.7150621118012422,
+          "precision": 0.7030534351145038,
+          "recall": 0.7274881516587678,
+          "support": 1588
+        },
+        "ORG": {
+          "f1": 0.8982019363762103,
+          "precision": 0.8761467889908257,
+          "recall": 0.9213961407491487,
+          "support": 4833
+        },
+        "PER": {
+          "f1": 0.9420849420849421,
+          "precision": 0.9454177897574124,
+          "recall": 0.9387755102040817,
+          "support": 5699
+        }
+      }
+    },
+    "eda": {
+      "training": {
+        "training_time": 1158.0277767181396,
+        "train_samples": 14041,
+        "val_samples": 3250
+      },
+      "augmentation_quality": {
+        "span_corruption": {
+          "span_corruption_rate": 0.0,
+          "total_augmented_sentences": 14041,
+          "corrupted_sentences": 0,
+          "total_spans": 23499,
+          "corrupted_spans": 0
+        },
+        "label_flip": {
+          "label_flip_rate": 0.04063291139240506,
+          "total_tokens": 197500,
+          "flipped_tokens": 8025,
+          "entity_to_non_entity": 3890,
+          "non_entity_to_entity": 4135
+        }
+      },
+      "evaluation": {
+        "eval_time": 30.69258713722229,
+        "test_samples": 3453,
+        "eval_loss": 0.16069664061069489,
+        "eval_f1": 0.970383919135356,
+        "eval_precision": 0.9710334086296913,
+        "eval_recall": 0.9698870172231764
+      },
+      "per_type_f1_scores": {
+        "overall": {
+          "f1": 0.8939512239930189,
+          "precision": 0.885210114607968,
+          "recall": 0.9028666852212636
+        },
+        "LOC": {
+          "f1": 0.9101756711965528,
+          "precision": 0.9050758075148319,
+          "recall": 0.9153333333333333,
+          "support": 3416
+        },
+        "MISC": {
+          "f1": 0.7164179104477612,
+          "precision": 0.6948775055679287,
+          "recall": 0.7393364928909952,
+          "support": 1588
+        },
+        "ORG": {
+          "f1": 0.9035419291614168,
+          "precision": 0.8916827852998066,
+          "recall": 0.9157207718501703,
+          "support": 4833
+        },
+        "PER": {
+          "f1": 0.9436737422697644,
+          "precision": 0.9428857715430862,
+          "recall": 0.944463031114085,
+          "support": 5699
+        }
+      }
+    },
+    "entity_replacement": {
+      "training": {
+        "training_time": 1201.416246175766,
+        "train_samples": 14041,
+        "val_samples": 3250
+      },
+      "augmentation_quality": {
+        "span_corruption": {
+          "span_corruption_rate": 0.7814970443700591,
+          "total_augmented_sentences": 14041,
+          "corrupted_sentences": 10973,
+          "total_spans": 23499,
+          "corrupted_spans": 10973
+        },
+        "label_flip": {
+          "label_flip_rate": 0.052280089708447545,
+          "total_tokens": 200650,
+          "flipped_tokens": 10490,
+          "entity_to_non_entity": 5090,
+          "non_entity_to_entity": 5400
+        }
+      },
+      "evaluation": {
+        "eval_time": 31.69111156463623,
+        "test_samples": 3453,
+        "eval_loss": 0.16541510820388794,
+        "eval_f1": 0.9673339809509803,
+        "eval_precision": 0.9675585780719922,
+        "eval_recall": 0.9671924489056271
+      },
+      "per_type_f1_scores": {
+        "overall": {
+          "f1": 0.8812633138834861,
+          "precision": 0.8797965788257051,
+          "recall": 0.8827349475832638
+        },
+        "LOC": {
+          "f1": 0.905210918114144,
+          "precision": 0.8985221674876848,
+          "recall": 0.912,
+          "support": 3416
+        },
+        "MISC": {
+          "f1": 0.6950636942675159,
+          "precision": 0.7006420545746388,
+          "recall": 0.6895734597156398,
+          "support": 1588
+        },
+        "ORG": {
+          "f1": 0.8814606741573033,
+          "precision": 0.8726362625139044,
+          "recall": 0.8904653802497162,
+          "support": 4833
+        },
+        "PER": {
+          "f1": 0.9356092614500592,
+          "precision": 0.9453551912568307,
+          "recall": 0.9260622281699565,
+          "support": 5699
+        }
+      }
+    },
+    "back_translation": {
+      "training": {
+        "training_time": 1236.6827697753906,
+        "train_samples": 14041,
+        "val_samples": 3250
+      },
+      "augmentation_quality": {
+        "span_corruption": {
+          "span_corruption_rate": 0.4045295919094082,
+          "total_augmented_sentences": 14041,
+          "corrupted_sentences": 5680,
+          "total_spans": 23499,
+          "corrupted_spans": 11270
+        },
+        "label_flip": {
+          "label_flip_rate": 0.0179333673387205,
+          "total_tokens": 186245,
+          "flipped_tokens": 3340,
+          "entity_to_non_entity": 1506,
+          "non_entity_to_entity": 1834
+        }
+      },
+      "evaluation": {
+        "eval_time": 30.942660331726074,
+        "test_samples": 3453,
+        "eval_loss": 0.2436758279800415,
+        "eval_f1": 0.9025069684234869,
+        "eval_precision": 0.9035337046066529,
+        "eval_recall": 0.9085422542979152
+      },
+      "per_type_f1_scores": {
+        "overall": {
+          "f1": 0.7071788740448095,
+          "precision": 0.8042090328682904,
+          "recall": 0.6310418406160127
+        },
+        "LOC": {
+          "f1": 0.7442990654205607,
+          "precision": 0.8472340425531915,
+          "recall": 0.6636666666666666,
+          "support": 3416
+        },
+        "MISC": {
+          "f1": 0.4315310763011622,
+          "precision": 0.5988779803646563,
+          "recall": 0.3372827804107425,
+          "support": 1588
+        },
+        "ORG": {
+          "f1": 0.7396790777379654,
+          "precision": 0.820034542314335,
+          "recall": 0.6736662883087401,
+          "support": 4833
+        },
+        "PER": {
+          "f1": 0.7323738385862634,
+          "precision": 0.804,
+          "recall": 0.6724657075945132,
+          "support": 5699
+        }
+      }
+    },
+    "contextual_mlm": {
+      "training": {
+        "training_time": 1226.6943452358246,
+        "train_samples": 14041,
+        "val_samples": 3250
+      },
+      "augmentation_quality": {
+        "span_corruption": {
+          "span_corruption_rate": 0.0,
+          "total_augmented_sentences": 14041,
+          "corrupted_sentences": 0,
+          "total_spans": 23499,
+          "corrupted_spans": 0
+        },
+        "label_flip": {
+          "label_flip_rate": 0.0,
+          "total_tokens": 203621,
+          "flipped_tokens": 0,
+          "entity_to_non_entity": 0,
+          "non_entity_to_entity": 0
+        }
+      },
+      "evaluation": {
+        "eval_time": 31.87114953994751,
+        "test_samples": 3453,
+        "eval_loss": 0.20738568902015686,
+        "eval_f1": 0.9602274915494194,
+        "eval_precision": 0.962171249651926,
+        "eval_recall": 0.9596129906556783
+      },
+      "per_type_f1_scores": {
+        "overall": {
+          "f1": 0.8484932010290334,
+          "precision": 0.8403858403858404,
+          "recall": 0.8567585119213285
+        },
+        "LOC": {
+          "f1": 0.8228530362917714,
+          "precision": 0.8924395946999221,
+          "recall": 0.7633333333333333,
+          "support": 3416
+        },
+        "MISC": {
+          "f1": 0.7081561654425976,
+          "precision": 0.6934140802422407,
+          "recall": 0.7235387045813586,
+          "support": 1588
+        },
+        "ORG": {
+          "f1": 0.8437829293993678,
+          "precision": 0.7873647984267453,
+          "recall": 0.9089103291713961,
+          "support": 4833
+        },
+        "PER": {
+          "f1": 0.9384027893076541,
+          "precision": 0.9314436387607119,
+          "recall": 0.9454667112746739,
+          "support": 5699
+        }
+      }
+    }
+  }
+}
