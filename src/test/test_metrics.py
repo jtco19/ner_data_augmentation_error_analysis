@@ -13,9 +13,13 @@ import logging
 sys.path.insert(0, str(Path(__file__).parent.parent / "metrics"))
 
 from metrics import (
+    align_original_and_augmented_tokens,
+    compute_entity_token_perturbation,
     extract_entities_from_labels,
+    entity_token_perturbation_rate,
     span_corruption_rate,
     label_flip_rate,
+    normalize_entity_type,
     per_type_f1_scores,
     augmentation_quality_report,
 )
@@ -156,6 +160,13 @@ def predictions_poor_augmented():
 class TestExtractEntitiesFromLabels:
     """Tests for extract_entities_from_labels function."""
 
+    def test_normalize_entity_type(self):
+        """Test BIO prefix normalization."""
+        assert normalize_entity_type("B-PER") == "PER"
+        assert normalize_entity_type("I-ORG") == "ORG"
+        assert normalize_entity_type("O") is None
+        assert normalize_entity_type(None) is None
+
     def test_extract_simple_entities(self):
         """Test extracting entities from simple BIO sequence."""
         tokens = ["John", "Smith", "works"]
@@ -237,6 +248,7 @@ class TestSpanCorruptionRate:
         )
 
         assert result["span_corruption_rate"] == 0.0, "Should be 0 corruption"
+        assert result["sentence_corruption_rate"] == 0.0, "Should be 0 corruption"
         assert result["corrupted_sentences"] == 0, "Should have no corrupted sentences"
         assert result["corrupted_spans"] == 0, "Should have no corrupted spans"
 
@@ -279,14 +291,56 @@ class TestSpanCorruptionRate:
 
         required_keys = {
             "span_corruption_rate",
+            "sentence_corruption_rate",
             "total_augmented_sentences",
             "corrupted_sentences",
             "total_spans",
             "corrupted_spans",
+            "deleted_spans",
+            "split_spans",
+            "merged_or_expanded_spans",
+            "shifted_or_type_changed_spans",
+            "text_changed_spans",
         }
         assert required_keys.issubset(
             result.keys()
         ), f"Result should have keys: {required_keys}"
+
+    def test_non_entity_token_changed_does_not_corrupt_entity(self):
+        """Changing an O token should not count as entity span corruption."""
+        result = span_corruption_rate(
+            [["John", "works", "at", "Google"]],
+            [["B-PER", "O", "O", "B-ORG"]],
+            [["John", "serves", "at", "Google"]],
+            [["B-PER", "O", "O", "B-ORG"]],
+        )
+
+        assert result["span_corruption_rate"] == 0.0
+        assert result["corrupted_spans"] == 0
+
+    def test_entity_span_split_is_corrupted(self):
+        """An inserted O label inside an entity should split and corrupt the span."""
+        result = span_corruption_rate(
+            [["John", "Smith"]],
+            [["B-PER", "I-PER"]],
+            [["John", "and", "Smith"]],
+            [["B-PER", "O", "I-PER"]],
+        )
+
+        assert result["corrupted_spans"] == 1
+        assert result["split_spans"] == 1
+
+    def test_same_type_entity_replacement_counts_text_changed_span(self):
+        """Same-type entity replacement is BIO-consistent but changes the source span."""
+        result = span_corruption_rate(
+            [["John", "Smith", "visited"]],
+            [["B-PER", "I-PER", "O"]],
+            [["Bill", "Gates", "visited"]],
+            [["B-PER", "I-PER", "O"]],
+        )
+
+        assert result["corrupted_spans"] == 1
+        assert result["text_changed_spans"] == 1
 
     def test_mismatched_lengths_raises_error(self, sample_ner_data):
         """Test that mismatched input lengths raise ValueError."""
@@ -369,7 +423,7 @@ class TestLabelFlipRate:
         assert result["flipped_tokens"] == 4, "Should have 4 total flips"
 
     def test_label_type_changes_not_counted(self):
-        """Test that changing from one entity type to another is not counted as flip."""
+        """Entity type changes are inconsistencies, not entity/O flips."""
         original = [["B-PER", "O"]]
         augmented = [["B-ORG", "O"]]  # Changed type but still entity
 
@@ -378,8 +432,34 @@ class TestLabelFlipRate:
         assert (
             result["flipped_tokens"] == 0
         ), "Type change should not count as flip (stays entity)"
+        assert result["label_type_changes"] == 1
+        assert result["label_inconsistency_rate"] > 0.0
         assert result["total_tokens"] == 2, "Should count total tokens"
         assert result["label_flip_rate"] == 0.0, "Type change should not count as flip"
+
+    def test_label_flip_handles_token_deletion_with_alignment(self):
+        """Deleting an O token before an entity should not make the entity look flipped."""
+        result = label_flip_rate(
+            [["O", "B-PER", "O"]],
+            [["B-PER", "O"]],
+            original_sentences=[["Today", "John", "left"]],
+            augmented_sentences=[["John", "left"]],
+        )
+
+        assert result["flipped_tokens"] == 0
+        assert result["label_flip_rate"] == 0.0
+
+    def test_deleted_entity_token_counts_as_entity_to_non_entity(self):
+        """Deleting an entity token should count as entity -> O."""
+        result = label_flip_rate(
+            [["B-PER", "I-PER", "O"]],
+            [["B-PER", "O"]],
+            original_sentences=[["John", "Smith", "left"]],
+            augmented_sentences=[["John", "left"]],
+        )
+
+        assert result["entity_to_non_entity"] == 1
+        assert result["deleted_entity_tokens"] == 1
 
     def test_returns_required_keys(self, sample_ner_data, augmented_no_corruption):
         """Test that result has all required keys."""
@@ -468,6 +548,11 @@ class TestPerTypeF1Scores:
                 result[entity_type]["support"] > 0
             ), f"{entity_type} should have positive support"
 
+        assert result["PER"]["support"] == 2
+        assert result["ORG"]["support"] == 2
+        assert result["LOC"]["support"] == 2
+        assert result["overall"]["support"] == 6
+
     def test_scores_between_0_and_1(self, sample_ner_data, predictions_poor):
         """Test that F1/precision/recall scores are between 0 and 1."""
         result = per_type_f1_scores(
@@ -512,6 +597,9 @@ class TestAugmentationQualityReport:
         assert isinstance(report, dict), "Should return a dictionary"
         assert "span_corruption" in report, "Report should have span_corruption"
         assert "label_flip" in report, "Report should have label_flip"
+        assert (
+            "entity_token_perturbation" in report
+        ), "Report should have entity token perturbation"
 
     def test_report_without_predictions(self, sample_ner_data, augmented_no_corruption):
         """Test report without prediction data."""
@@ -728,6 +816,52 @@ class TestIntegration:
                 assert all(
                     v == values[0] for v in values
                 ), f"{key}.{metric_key} should be consistent"
+
+
+class TestTokenAlignmentAndPerturbation:
+    """Tests for token alignment and entity/non-entity perturbation metrics."""
+
+    def test_alignment_handles_insertions_and_deletions(self):
+        alignment = align_original_and_augmented_tokens(
+            ["Today", "John", "Smith", "left"],
+            ["John", "left", "early"],
+        )
+
+        assert alignment["orig_to_aug"] == [None, 0, None, 1]
+        assert alignment["aug_to_orig"] == [1, 3, None]
+
+    def test_entity_token_perturbation_non_entity_change_only(self):
+        result = compute_entity_token_perturbation(
+            ["John", "works", "at", "Google"],
+            ["B-PER", "O", "O", "B-ORG"],
+            ["John", "serves", "at", "Google"],
+            ["B-PER", "O", "O", "B-ORG"],
+        )
+
+        assert result["entity_token_perturbation_rate"] == 0.0
+        assert result["non_entity_token_perturbation_rate"] == 0.5
+
+    def test_entity_token_perturbation_entity_deleted(self):
+        result = compute_entity_token_perturbation(
+            ["John", "Smith", "left"],
+            ["B-PER", "I-PER", "O"],
+            ["John", "left"],
+            ["B-PER", "O"],
+        )
+
+        assert result["changed_or_deleted_entity_tokens"] == 1
+        assert result["entity_token_perturbation_rate"] == 0.5
+
+    def test_dataset_level_entity_token_perturbation(self):
+        result = entity_token_perturbation_rate(
+            [["John", "works"], ["Paris", "today"]],
+            [["B-PER", "O"], ["B-LOC", "O"]],
+            [["John", "serves"], ["Paris", "today"]],
+            [["B-PER", "O"], ["B-LOC", "O"]],
+        )
+
+        assert result["entity_token_perturbation_rate"] == 0.0
+        assert result["non_entity_token_perturbation_rate"] == 0.5
 
 
 if __name__ == "__main__":
