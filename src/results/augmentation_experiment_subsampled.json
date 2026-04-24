@@ -8,75 +8,101 @@
   "models": {
     "baseline": {
       "training": {
-        "training_time": 283.24215269088745,
+        "training_time": 136.29205060005188,
         "train_samples": 1404,
         "val_samples": 325
       },
       "augmentation_quality": {},
       "evaluation": {
-        "eval_time": 30.833741188049316,
+        "eval_time": 61.33898949623108,
         "test_samples": 3453,
-        "eval_loss": 0.6442724466323853,
-        "eval_f1": 0.7395567775793273,
-        "eval_precision": 0.7331722750936019,
-        "eval_recall": 0.7958903893730007
+        "eval_loss": 0.6597462892532349,
+        "eval_f1": 0.7223237469416341,
+        "eval_precision": 0.7149432950365979,
+        "eval_recall": 0.7886418430216984
       },
       "per_type_f1_scores": {
         "overall": {
-          "f1": 0.2172523961661342,
-          "precision": 0.31015490533562823,
-          "recall": 0.16717691808145468
+          "f1": 0.19333290513199303,
+          "precision": 0.31419624217118997,
+          "recall": 0.13962334168290194,
+          "support": 10779
         },
         "LOC": {
-          "f1": 0.2830101569713758,
-          "precision": 0.4602102102102102,
-          "recall": 0.20433333333333334,
-          "support": 3416
+          "f1": 0.2963917525773196,
+          "precision": 0.4166666666666667,
+          "recall": 0.23,
+          "support": 3000
         },
         "MISC": {
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
-          "f1": 0.28133245382585753,
-          "precision": 0.3358267716535433,
-          "recall": 0.2420544835414302,
-          "support": 4833
+          "f1": 0.1349952963311383,
+          "precision": 0.3942307692307692,
+          "recall": 0.08144154370034053,
+          "support": 3524
         },
         "PER": {
-          "f1": 0.1364744110479285,
-          "precision": 0.17364341085271318,
-          "recall": 0.11241217798594848,
-          "support": 5699
+          "f1": 0.1961367013372957,
+          "precision": 0.22045929018789143,
+          "recall": 0.17664770826363332,
+          "support": 2989
         }
       }
     },
     "entity_replacement": {
       "training": {
-        "training_time": 231.72701287269592,
+        "training_time": 141.71980333328247,
         "train_samples": 1404,
         "val_samples": 325
       },
       "augmentation_quality": {
         "span_corruption": {
-          "span_corruption_rate": 0.7814970443700591,
+          "span_corruption_rate": 0.4722754159751479,
+          "sentence_corruption_rate": 0.7903995441920091,
           "total_augmented_sentences": 14041,
-          "corrupted_sentences": 10973,
+          "corrupted_sentences": 11098,
           "total_spans": 23499,
-          "corrupted_spans": 10973
+          "corrupted_spans": 11098,
+          "deleted_spans": 2334,
+          "split_spans": 2,
+          "merged_or_expanded_spans": 2460,
+          "shifted_or_type_changed_spans": 0,
+          "text_changed_spans": 6302
         },
         "label_flip": {
-          "label_flip_rate": 0.052280089708447545,
-          "total_tokens": 200650,
-          "flipped_tokens": 10490,
-          "entity_to_non_entity": 5090,
-          "non_entity_to_entity": 5400
+          "label_flip_rate": 0.029546619719672273,
+          "label_inconsistency_rate": 0.029546619719672273,
+          "total_tokens": 206758,
+          "flipped_tokens": 6109,
+          "inconsistent_tokens": 6109,
+          "entity_to_non_entity": 2972,
+          "non_entity_to_entity": 3137,
+          "label_type_changes": 0,
+          "deleted_entity_tokens": 2972,
+          "inserted_entity_tokens": 3137
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.09217055688292593,
+          "entity_token_perturbation_rate": 0.467643862174309,
+          "non_entity_token_perturbation_rate": 0.0,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 15920,
+          "changed_or_deleted_entity_tokens": 15920,
+          "changed_or_deleted_non_entity_tokens": 0,
+          "inserted_tokens": 3137,
+          "inserted_entity_tokens": 3137,
+          "inserted_non_entity_tokens": 0
         }
       },
       "evaluation": {
-        "eval_time": 31.027162313461304,
+        "eval_time": 30.39008927345276,
         "test_samples": 3453,
         "eval_loss": 0.6481097340583801,
         "eval_f1": 0.7366945426186972,
@@ -87,58 +113,84 @@
         "overall": {
           "f1": 0.19710746323305062,
           "precision": 0.28798145506419404,
-          "recall": 0.14982836997866222
+          "recall": 0.14982836997866222,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.09634031904910854,
           "precision": 0.7817258883248731,
           "recall": 0.051333333333333335,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.3066754791804362,
           "precision": 0.28705765899529817,
           "recall": 0.32917139614074914,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.13810506997017663,
           "precision": 0.2197080291970803,
           "recall": 0.10070257611241218,
-          "support": 5699
+          "support": 2989
         }
       }
     },
     "back_translation": {
       "training": {
-        "training_time": 227.78331923484802,
+        "training_time": 248.60597896575928,
         "train_samples": 1404,
         "val_samples": 325
       },
       "augmentation_quality": {
         "span_corruption": {
-          "span_corruption_rate": 0.4045295919094082,
+          "span_corruption_rate": 0.4837227116047491,
+          "sentence_corruption_rate": 0.4055978918880422,
           "total_augmented_sentences": 14041,
-          "corrupted_sentences": 5680,
+          "corrupted_sentences": 5695,
           "total_spans": 23499,
-          "corrupted_spans": 11270
+          "corrupted_spans": 11367,
+          "deleted_spans": 1121,
+          "split_spans": 5422,
+          "merged_or_expanded_spans": 2115,
+          "shifted_or_type_changed_spans": 131,
+          "text_changed_spans": 2578
         },
         "label_flip": {
-          "label_flip_rate": 0.0179333673387205,
-          "total_tokens": 186245,
-          "flipped_tokens": 3340,
-          "entity_to_non_entity": 1506,
-          "non_entity_to_entity": 1834
+          "label_flip_rate": 0.09321506682867557,
+          "label_inconsistency_rate": 0.09547995139732686,
+          "total_tokens": 205750,
+          "flipped_tokens": 19179,
+          "inconsistent_tokens": 19645,
+          "entity_to_non_entity": 9771,
+          "non_entity_to_entity": 9408,
+          "label_type_changes": 466,
+          "deleted_entity_tokens": 1241,
+          "inserted_entity_tokens": 2129
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.3816536558453124,
+          "entity_token_perturbation_rate": 0.19307934083365155,
+          "non_entity_token_perturbation_rate": 0.32261850004127895,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 61282,
+          "changed_or_deleted_entity_tokens": 6573,
+          "changed_or_deleted_non_entity_tokens": 54709,
+          "inserted_tokens": 26572,
+          "inserted_entity_tokens": 2129,
+          "inserted_non_entity_tokens": 24443
         }
       },
       "evaluation": {
-        "eval_time": 30.988473176956177,
+        "eval_time": 31.321009397506714,
         "test_samples": 3453,
         "eval_loss": 0.7575486898422241,
         "eval_f1": 0.6592126873385856,
@@ -149,58 +201,84 @@
         "overall": {
           "f1": 0.03293201133144476,
           "precision": 0.3597678916827853,
-          "recall": 0.017255775118285556
+          "recall": 0.017255775118285556,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.0019946808510638296,
           "precision": 0.375,
           "recall": 0.001,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.08885542168674698,
           "precision": 0.3847826086956522,
           "recall": 0.050227014755959136,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.003949967083607637,
           "precision": 0.12244897959183673,
           "recall": 0.0020073603211776514,
-          "support": 5699
+          "support": 2989
         }
       }
     },
     "contextual_mlm": {
       "training": {
-        "training_time": 252.0753436088562,
+        "training_time": 256.9389259815216,
         "train_samples": 1404,
         "val_samples": 325
       },
       "augmentation_quality": {
         "span_corruption": {
           "span_corruption_rate": 0.0,
+          "sentence_corruption_rate": 0.0,
           "total_augmented_sentences": 14041,
           "corrupted_sentences": 0,
           "total_spans": 23499,
-          "corrupted_spans": 0
+          "corrupted_spans": 0,
+          "deleted_spans": 0,
+          "split_spans": 0,
+          "merged_or_expanded_spans": 0,
+          "shifted_or_type_changed_spans": 0,
+          "text_changed_spans": 0
         },
         "label_flip": {
           "label_flip_rate": 0.0,
+          "label_inconsistency_rate": 0.0,
           "total_tokens": 203621,
           "flipped_tokens": 0,
+          "inconsistent_tokens": 0,
           "entity_to_non_entity": 0,
-          "non_entity_to_entity": 0
+          "non_entity_to_entity": 0,
+          "label_type_changes": 0,
+          "deleted_entity_tokens": 0,
+          "inserted_entity_tokens": 0
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.05501460803810366,
+          "entity_token_perturbation_rate": 0.0,
+          "non_entity_token_perturbation_rate": 0.06586939343546923,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 11170,
+          "changed_or_deleted_entity_tokens": 0,
+          "changed_or_deleted_non_entity_tokens": 11170,
+          "inserted_tokens": 34,
+          "inserted_entity_tokens": 0,
+          "inserted_non_entity_tokens": 34
         }
       },
       "evaluation": {
-        "eval_time": 30.511667728424072,
+        "eval_time": 30.707805395126343,
         "test_samples": 3453,
         "eval_loss": 0.657366156578064,
         "eval_f1": 0.7343697332959832,
@@ -211,58 +289,84 @@
         "overall": {
           "f1": 0.19236988680601308,
           "precision": 0.27137546468401486,
-          "recall": 0.14899341311810002
+          "recall": 0.14899341311810002,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.13321277878239904,
           "precision": 0.6949685534591195,
           "recall": 0.07366666666666667,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.28848786558805223,
           "precision": 0.256927510529816,
           "recall": 0.3288876276958002,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.1108386463952918,
           "precision": 0.20752984389348025,
           "recall": 0.07561057209769154,
-          "support": 5699
+          "support": 2989
         }
       }
     },
     "eda": {
       "training": {
-        "training_time": 198.33840036392212,
+        "training_time": 237.36084270477295,
         "train_samples": 1404,
         "val_samples": 325
       },
       "augmentation_quality": {
         "span_corruption": {
-          "span_corruption_rate": 0.0,
+          "span_corruption_rate": 4.255500234052513e-05,
+          "sentence_corruption_rate": 7.121999857560003e-05,
           "total_augmented_sentences": 14041,
-          "corrupted_sentences": 0,
+          "corrupted_sentences": 1,
           "total_spans": 23499,
-          "corrupted_spans": 0
+          "corrupted_spans": 1,
+          "deleted_spans": 1,
+          "split_spans": 0,
+          "merged_or_expanded_spans": 0,
+          "shifted_or_type_changed_spans": 0,
+          "text_changed_spans": 0
         },
         "label_flip": {
-          "label_flip_rate": 0.04063291139240506,
-          "total_tokens": 197500,
-          "flipped_tokens": 8025,
-          "entity_to_non_entity": 3890,
-          "non_entity_to_entity": 4135
+          "label_flip_rate": 9.822121381776036e-06,
+          "label_inconsistency_rate": 9.822121381776036e-06,
+          "total_tokens": 203622,
+          "flipped_tokens": 2,
+          "inconsistent_tokens": 2,
+          "entity_to_non_entity": 1,
+          "non_entity_to_entity": 1,
+          "label_type_changes": 0,
+          "deleted_entity_tokens": 1,
+          "inserted_entity_tokens": 1
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.07502850736861351,
+          "entity_token_perturbation_rate": 2.9374614458185237e-05,
+          "non_entity_token_perturbation_rate": 0.06706648268053639,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 11374,
+          "changed_or_deleted_entity_tokens": 1,
+          "changed_or_deleted_non_entity_tokens": 11373,
+          "inserted_tokens": 4220,
+          "inserted_entity_tokens": 1,
+          "inserted_non_entity_tokens": 4219
         }
       },
       "evaluation": {
-        "eval_time": 30.815956354141235,
+        "eval_time": 30.54762887954712,
         "test_samples": 3453,
         "eval_loss": 0.6460498571395874,
         "eval_f1": 0.7428339778123974,
@@ -273,31 +377,32 @@
         "overall": {
           "f1": 0.211264286555909,
           "precision": 0.28942695722356737,
-          "recall": 0.16634196122089248
+          "recall": 0.16634196122089248,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.17064647641234712,
           "precision": 0.6751152073732719,
           "recall": 0.09766666666666667,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.30838323353293406,
           "precision": 0.27515583259127335,
           "recall": 0.3507377979568672,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.12400187881634571,
           "precision": 0.20803782505910165,
           "recall": 0.08832385413181666,
-          "support": 5699
+          "support": 2989
         }
       }
     }
