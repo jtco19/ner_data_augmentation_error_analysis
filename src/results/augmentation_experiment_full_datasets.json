@@ -8,13 +8,13 @@
   "models": {
     "baseline": {
       "training": {
-        "training_time": 1117.059839963913,
+        "training_time": 1239.6901001930237,
         "train_samples": 14041,
         "val_samples": 3250
       },
       "augmentation_quality": {},
       "evaluation": {
-        "eval_time": 79.36037468910217,
+        "eval_time": 744.2352206707001,
         "test_samples": 3453,
         "eval_loss": 0.16906607151031494,
         "eval_f1": 0.9701646588449933,
@@ -25,120 +25,84 @@
         "overall": {
           "f1": 0.8946179034266476,
           "precision": 0.889490095377843,
-          "recall": 0.8998051767325355
+          "recall": 0.8998051767325355,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.9206081081081081,
           "precision": 0.9332191780821918,
           "recall": 0.9083333333333333,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.7150621118012422,
           "precision": 0.7030534351145038,
           "recall": 0.7274881516587678,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.8982019363762103,
           "precision": 0.8761467889908257,
           "recall": 0.9213961407491487,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.9420849420849421,
           "precision": 0.9454177897574124,
           "recall": 0.9387755102040817,
-          "support": 5699
-        }
-      }
-    },
-    "eda": {
-      "training": {
-        "training_time": 1158.0277767181396,
-        "train_samples": 14041,
-        "val_samples": 3250
-      },
-      "augmentation_quality": {
-        "span_corruption": {
-          "span_corruption_rate": 0.0,
-          "total_augmented_sentences": 14041,
-          "corrupted_sentences": 0,
-          "total_spans": 23499,
-          "corrupted_spans": 0
-        },
-        "label_flip": {
-          "label_flip_rate": 0.04063291139240506,
-          "total_tokens": 197500,
-          "flipped_tokens": 8025,
-          "entity_to_non_entity": 3890,
-          "non_entity_to_entity": 4135
-        }
-      },
-      "evaluation": {
-        "eval_time": 30.69258713722229,
-        "test_samples": 3453,
-        "eval_loss": 0.16069664061069489,
-        "eval_f1": 0.970383919135356,
-        "eval_precision": 0.9710334086296913,
-        "eval_recall": 0.9698870172231764
-      },
-      "per_type_f1_scores": {
-        "overall": {
-          "f1": 0.8939512239930189,
-          "precision": 0.885210114607968,
-          "recall": 0.9028666852212636
-        },
-        "LOC": {
-          "f1": 0.9101756711965528,
-          "precision": 0.9050758075148319,
-          "recall": 0.9153333333333333,
-          "support": 3416
-        },
-        "MISC": {
-          "f1": 0.7164179104477612,
-          "precision": 0.6948775055679287,
-          "recall": 0.7393364928909952,
-          "support": 1588
-        },
-        "ORG": {
-          "f1": 0.9035419291614168,
-          "precision": 0.8916827852998066,
-          "recall": 0.9157207718501703,
-          "support": 4833
-        },
-        "PER": {
-          "f1": 0.9436737422697644,
-          "precision": 0.9428857715430862,
-          "recall": 0.944463031114085,
-          "support": 5699
+          "support": 2989
         }
       }
     },
     "entity_replacement": {
       "training": {
-        "training_time": 1201.416246175766,
+        "training_time": 1374.3901019096375,
         "train_samples": 14041,
         "val_samples": 3250
       },
       "augmentation_quality": {
         "span_corruption": {
-          "span_corruption_rate": 0.7814970443700591,
+          "span_corruption_rate": 0.4722754159751479,
+          "sentence_corruption_rate": 0.7903995441920091,
           "total_augmented_sentences": 14041,
-          "corrupted_sentences": 10973,
+          "corrupted_sentences": 11098,
           "total_spans": 23499,
-          "corrupted_spans": 10973
+          "corrupted_spans": 11098,
+          "deleted_spans": 2334,
+          "split_spans": 2,
+          "merged_or_expanded_spans": 2460,
+          "shifted_or_type_changed_spans": 0,
+          "text_changed_spans": 6302
         },
         "label_flip": {
-          "label_flip_rate": 0.052280089708447545,
-          "total_tokens": 200650,
-          "flipped_tokens": 10490,
-          "entity_to_non_entity": 5090,
-          "non_entity_to_entity": 5400
+          "label_flip_rate": 0.029546619719672273,
+          "label_inconsistency_rate": 0.029546619719672273,
+          "total_tokens": 206758,
+          "flipped_tokens": 6109,
+          "inconsistent_tokens": 6109,
+          "entity_to_non_entity": 2972,
+          "non_entity_to_entity": 3137,
+          "label_type_changes": 0,
+          "deleted_entity_tokens": 2972,
+          "inserted_entity_tokens": 3137
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.09217055688292593,
+          "entity_token_perturbation_rate": 0.467643862174309,
+          "non_entity_token_perturbation_rate": 0.0,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 15920,
+          "changed_or_deleted_entity_tokens": 15920,
+          "changed_or_deleted_non_entity_tokens": 0,
+          "inserted_tokens": 3137,
+          "inserted_entity_tokens": 3137,
+          "inserted_non_entity_tokens": 0
         }
       },
       "evaluation": {
-        "eval_time": 31.69111156463623,
+        "eval_time": 35.685213804244995,
         "test_samples": 3453,
         "eval_loss": 0.16541510820388794,
         "eval_f1": 0.9673339809509803,
@@ -149,120 +113,172 @@
         "overall": {
           "f1": 0.8812633138834861,
           "precision": 0.8797965788257051,
-          "recall": 0.8827349475832638
+          "recall": 0.8827349475832638,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.905210918114144,
           "precision": 0.8985221674876848,
           "recall": 0.912,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.6950636942675159,
           "precision": 0.7006420545746388,
           "recall": 0.6895734597156398,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.8814606741573033,
           "precision": 0.8726362625139044,
           "recall": 0.8904653802497162,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.9356092614500592,
           "precision": 0.9453551912568307,
           "recall": 0.9260622281699565,
-          "support": 5699
+          "support": 2989
         }
       }
     },
     "back_translation": {
       "training": {
-        "training_time": 1236.6827697753906,
+        "training_time": 1373.7355518341064,
         "train_samples": 14041,
         "val_samples": 3250
       },
       "augmentation_quality": {
         "span_corruption": {
-          "span_corruption_rate": 0.4045295919094082,
+          "span_corruption_rate": 0.4837227116047491,
+          "sentence_corruption_rate": 0.4055978918880422,
           "total_augmented_sentences": 14041,
-          "corrupted_sentences": 5680,
+          "corrupted_sentences": 5695,
           "total_spans": 23499,
-          "corrupted_spans": 11270
+          "corrupted_spans": 11367,
+          "deleted_spans": 1121,
+          "split_spans": 5422,
+          "merged_or_expanded_spans": 2115,
+          "shifted_or_type_changed_spans": 131,
+          "text_changed_spans": 2578
         },
         "label_flip": {
-          "label_flip_rate": 0.0179333673387205,
-          "total_tokens": 186245,
-          "flipped_tokens": 3340,
-          "entity_to_non_entity": 1506,
-          "non_entity_to_entity": 1834
+          "label_flip_rate": 0.09321506682867557,
+          "label_inconsistency_rate": 0.09547995139732686,
+          "total_tokens": 205750,
+          "flipped_tokens": 19179,
+          "inconsistent_tokens": 19645,
+          "entity_to_non_entity": 9771,
+          "non_entity_to_entity": 9408,
+          "label_type_changes": 466,
+          "deleted_entity_tokens": 1241,
+          "inserted_entity_tokens": 2129
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.3816536558453124,
+          "entity_token_perturbation_rate": 0.19307934083365155,
+          "non_entity_token_perturbation_rate": 0.32261850004127895,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 61282,
+          "changed_or_deleted_entity_tokens": 6573,
+          "changed_or_deleted_non_entity_tokens": 54709,
+          "inserted_tokens": 26572,
+          "inserted_entity_tokens": 2129,
+          "inserted_non_entity_tokens": 24443
         }
       },
       "evaluation": {
-        "eval_time": 30.942660331726074,
+        "eval_time": 35.86717963218689,
         "test_samples": 3453,
-        "eval_loss": 0.2436758279800415,
-        "eval_f1": 0.9025069684234869,
-        "eval_precision": 0.9035337046066529,
-        "eval_recall": 0.9085422542979152
+        "eval_loss": 0.24367684125900269,
+        "eval_f1": 0.9024533245489673,
+        "eval_precision": 0.90348591900764,
+        "eval_recall": 0.9084949811695372
       },
       "per_type_f1_scores": {
         "overall": {
-          "f1": 0.7071788740448095,
-          "precision": 0.8042090328682904,
-          "recall": 0.6310418406160127
+          "f1": 0.7069404730959189,
+          "precision": 0.8040444654683065,
+          "recall": 0.6307635216624918,
+          "support": 10779
         },
         "LOC": {
-          "f1": 0.7442990654205607,
-          "precision": 0.8472340425531915,
-          "recall": 0.6636666666666666,
-          "support": 3416
+          "f1": 0.7442034405385191,
+          "precision": 0.8475298126064736,
+          "recall": 0.6633333333333333,
+          "support": 3000
         },
         "MISC": {
-          "f1": 0.4315310763011622,
-          "precision": 0.5988779803646563,
-          "recall": 0.3372827804107425,
-          "support": 1588
+          "f1": 0.4307381193124367,
+          "precision": 0.598314606741573,
+          "recall": 0.33649289099526064,
+          "support": 1266
         },
         "ORG": {
           "f1": 0.7396790777379654,
           "precision": 0.820034542314335,
           "recall": 0.6736662883087401,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
-          "f1": 0.7323738385862634,
-          "precision": 0.804,
-          "recall": 0.6724657075945132,
-          "support": 5699
+          "f1": 0.7318761384335155,
+          "precision": 0.8032786885245902,
+          "recall": 0.6721311475409836,
+          "support": 2989
         }
       }
     },
     "contextual_mlm": {
       "training": {
-        "training_time": 1226.6943452358246,
+        "training_time": 1387.2698884010315,
         "train_samples": 14041,
         "val_samples": 3250
       },
       "augmentation_quality": {
         "span_corruption": {
           "span_corruption_rate": 0.0,
+          "sentence_corruption_rate": 0.0,
           "total_augmented_sentences": 14041,
           "corrupted_sentences": 0,
           "total_spans": 23499,
-          "corrupted_spans": 0
+          "corrupted_spans": 0,
+          "deleted_spans": 0,
+          "split_spans": 0,
+          "merged_or_expanded_spans": 0,
+          "shifted_or_type_changed_spans": 0,
+          "text_changed_spans": 0
         },
         "label_flip": {
           "label_flip_rate": 0.0,
+          "label_inconsistency_rate": 0.0,
           "total_tokens": 203621,
           "flipped_tokens": 0,
+          "inconsistent_tokens": 0,
           "entity_to_non_entity": 0,
-          "non_entity_to_entity": 0
+          "non_entity_to_entity": 0,
+          "label_type_changes": 0,
+          "deleted_entity_tokens": 0,
+          "inserted_entity_tokens": 0
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.05501460803810366,
+          "entity_token_perturbation_rate": 0.0,
+          "non_entity_token_perturbation_rate": 0.06586939343546923,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 11170,
+          "changed_or_deleted_entity_tokens": 0,
+          "changed_or_deleted_non_entity_tokens": 11170,
+          "inserted_tokens": 34,
+          "inserted_entity_tokens": 0,
+          "inserted_non_entity_tokens": 34
         }
       },
       "evaluation": {
-        "eval_time": 31.87114953994751,
+        "eval_time": 36.954317569732666,
         "test_samples": 3453,
         "eval_loss": 0.20738568902015686,
         "eval_f1": 0.9602274915494194,
@@ -273,31 +289,120 @@
         "overall": {
           "f1": 0.8484932010290334,
           "precision": 0.8403858403858404,
-          "recall": 0.8567585119213285
+          "recall": 0.8567585119213285,
+          "support": 10779
         },
         "LOC": {
           "f1": 0.8228530362917714,
           "precision": 0.8924395946999221,
           "recall": 0.7633333333333333,
-          "support": 3416
+          "support": 3000
         },
         "MISC": {
           "f1": 0.7081561654425976,
           "precision": 0.6934140802422407,
           "recall": 0.7235387045813586,
-          "support": 1588
+          "support": 1266
         },
         "ORG": {
           "f1": 0.8437829293993678,
           "precision": 0.7873647984267453,
           "recall": 0.9089103291713961,
-          "support": 4833
+          "support": 3524
         },
         "PER": {
           "f1": 0.9384027893076541,
           "precision": 0.9314436387607119,
           "recall": 0.9454667112746739,
-          "support": 5699
+          "support": 2989
+        }
+      }
+    },
+    "eda": {
+      "training": {
+        "training_time": 1385.027602672577,
+        "train_samples": 14041,
+        "val_samples": 3250
+      },
+      "augmentation_quality": {
+        "span_corruption": {
+          "span_corruption_rate": 4.255500234052513e-05,
+          "sentence_corruption_rate": 7.121999857560003e-05,
+          "total_augmented_sentences": 14041,
+          "corrupted_sentences": 1,
+          "total_spans": 23499,
+          "corrupted_spans": 1,
+          "deleted_spans": 1,
+          "split_spans": 0,
+          "merged_or_expanded_spans": 0,
+          "shifted_or_type_changed_spans": 0,
+          "text_changed_spans": 0
+        },
+        "label_flip": {
+          "label_flip_rate": 9.822121381776036e-06,
+          "label_inconsistency_rate": 9.822121381776036e-06,
+          "total_tokens": 203622,
+          "flipped_tokens": 2,
+          "inconsistent_tokens": 2,
+          "entity_to_non_entity": 1,
+          "non_entity_to_entity": 1,
+          "label_type_changes": 0,
+          "deleted_entity_tokens": 1,
+          "inserted_entity_tokens": 1
+        },
+        "token_perturbation": {
+          "all_token_perturbation_rate": 0.07502850736861351,
+          "entity_token_perturbation_rate": 2.9374614458185237e-05,
+          "non_entity_token_perturbation_rate": 0.06706648268053639,
+          "total_original_tokens": 203621,
+          "total_entity_tokens": 34043,
+          "total_non_entity_tokens": 169578,
+          "changed_or_deleted_original_tokens": 11374,
+          "changed_or_deleted_entity_tokens": 1,
+          "changed_or_deleted_non_entity_tokens": 11373,
+          "inserted_tokens": 4220,
+          "inserted_entity_tokens": 1,
+          "inserted_non_entity_tokens": 4219
+        }
+      },
+      "evaluation": {
+        "eval_time": 35.822389364242554,
+        "test_samples": 3453,
+        "eval_loss": 0.16069664061069489,
+        "eval_f1": 0.970383919135356,
+        "eval_precision": 0.9710334086296913,
+        "eval_recall": 0.9698870172231764
+      },
+      "per_type_f1_scores": {
+        "overall": {
+          "f1": 0.8939512239930189,
+          "precision": 0.885210114607968,
+          "recall": 0.9028666852212636,
+          "support": 10779
+        },
+        "LOC": {
+          "f1": 0.9101756711965528,
+          "precision": 0.9050758075148319,
+          "recall": 0.9153333333333333,
+          "support": 3000
+        },
+        "MISC": {
+          "f1": 0.7164179104477612,
+          "precision": 0.6948775055679287,
+          "recall": 0.7393364928909952,
+          "support": 1266
+        },
+        "ORG": {
+          "f1": 0.9035419291614168,
+          "precision": 0.8916827852998066,
+          "recall": 0.9157207718501703,
+          "support": 3524
+        },
+        "PER": {
+          "f1": 0.9436737422697644,
+          "precision": 0.9428857715430862,
+          "recall": 0.944463031114085,
+          "support": 2989
         }
       }
     }
